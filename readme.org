@@ -1,0 +1,46 @@
+Status: Build of =cimplot= is failing with
+
+#+name: build-cimplot
+#+begin_src sh :results verbatim :exports both
+nix build .#cimplot 2>&1
+#+end_src
+
+#+RESULTS: build-cimplot
+#+begin_example
+warning: Git tree '/home/dominik/work/misc/cimplot' is dirty
+this derivation will be built:
+  /nix/store/frd5a8kskbplwnnvrvh5l0rszzfx03il-cimplot-7ed0a0713c1cbf296df5a625d65e52ce6d6ae68b.drv
+building '/nix/store/frd5a8kskbplwnnvrvh5l0rszzfx03il-cimplot-7ed0a0713c1cbf296df5a625d65e52ce6d6ae68b.drv'...
+error: Cannot build '/nix/store/frd5a8kskbplwnnvrvh5l0rszzfx03il-cimplot-7ed0a0713c1cbf296df5a625d65e52ce6d6ae68b.drv'.
+       Reason: builder failed with exit code 2.
+       Output paths:
+         /nix/store/jpwvbpp5k0k4cq2f0wjcbjb3r319z1sv-cimplot-7ed0a0713c1cbf296df5a625d65e52ce6d6ae68b
+       Last 25 log lines:
+       > /build/source/cimplot.cpp: In function 'ImPlotTime_c ImPlot_MkTime(tm*)':
+       > /build/source/cimplot.cpp:3239:46: error: 'MkTime' is not a member of 'ImPlot'; did you mean 'MakeTime'?
+       >  3239 |     return ConvertFromCPP_ImPlotTime(ImPlot::MkTime(ptm));
+       >       |                                              ^~~~~~
+       >       |                                              MakeTime
+       > /build/source/cimplot.cpp: In function 'tm* ImPlot_GetTime(ImPlotTime_c, tm*)':
+       > /build/source/cimplot.cpp:3243:20: error: 'GetTime' is not a member of 'ImPlot'; did you mean 'MkGmtTime'?
+       >  3243 |     return ImPlot::GetTime(ConvertToCPP_ImPlotTime(t),ptm);
+       >       |                    ^~~~~~~
+       >       |                    MkGmtTime
+       > /build/source/cimplot.cpp: In function 'int ImPlot_GetMonth(ImPlotTime_c)':
+       > /build/source/cimplot.cpp:3255:20: error: 'GetMonth' is not a member of 'ImPlot'
+       >  3255 |     return ImPlot::GetMonth(ConvertToCPP_ImPlotTime(t));
+       >       |                    ^~~~~~~~
+       > /build/source/cimplot.cpp: In function 'ImPlotTime_c ImPlot_Now()':
+       > /build/source/cimplot.cpp:3279:46: error: 'Now' is not a member of 'ImPlot'
+       >  3279 |     return ConvertFromCPP_ImPlotTime(ImPlot::Now());
+       >       |                                              ^~~
+       > /build/source/cimplot.cpp: In function 'ImPlotTime_c ImPlot_Today()':
+       > /build/source/cimplot.cpp:3283:46: error: 'Today' is not a member of 'ImPlot'
+       >  3283 |     return ConvertFromCPP_ImPlotTime(ImPlot::Today());
+       >       |                                              ^~~~~
+       > make[2]: *** [CMakeFiles/cimplot.dir/build.make:79: CMakeFiles/cimplot.dir/cimplot.cpp.o] Error 1
+       > make[1]: *** [CMakeFiles/Makefile2:87: CMakeFiles/cimplot.dir/all] Error 2
+       > make: *** [Makefile:136: all] Error 2
+       For full logs, run:
+         nix log /nix/store/frd5a8kskbplwnnvrvh5l0rszzfx03il-cimplot-7ed0a0713c1cbf296df5a625d65e52ce6d6ae68b.drv
+#+end_example

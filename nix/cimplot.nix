@@ -35,8 +35,8 @@ stdenv.mkDerivation rec {
   ];
   buildInputs = [
     imgui
-    cimgui
     implot
+    cimgui
   ];
 
   prePatch = ''
@@ -44,11 +44,13 @@ stdenv.mkDerivation rec {
       --replace-fail '#include "cimgui.h"' '#include <cimgui.h>'
 
     substituteInPlace cimplot.cpp \
-      --replace-fail '#include "./implot/implot.h"' '#include <implot.h>'
+      --replace-fail '#include "./implot/implot.h"' '#include <implot.h>' \
+      --replace-fail '#include "./implot/implot_internal.h"' '#include <implot_internal.h>'
   '';
 
   postPatch = ''
     substituteInPlace CMakeLists.txt \
-      --replace-fail "cmake_minimum_required(VERSION 3.1)" "cmake_minimum_required(VERSION 3.10)"
+      --replace-fail "cmake_minimum_required(VERSION 3.1)" "cmake_minimum_required(VERSION 3.10)" \
+      --replace-fail 'add_definitions("-DIMGUI_USER_CONFIG=\"../cimconfig.h\"")' ""
   '';
 }

@@ -40,4 +40,17 @@ stdenv.mkDerivation rec {
       --replace-fail '#include "./imgui/imgui.h"' '#include <imgui.h>' \
       --replace-fail '#include "./imgui/imgui_internal.h"' '#include <imgui_internal.h>'
   '';
+
+  installPhase = ''
+    mkdir -p $out/include
+    cp ../*.h $out/include
+
+    mkdir -p $out/lib
+    cp cimgui.so $out/lib
+
+    mkdir -p $out/lib/pkgconfig
+    cp ${./cimgui.pc.base} $out/lib/pkgconfig/cimgui.pc
+    substituteInPlace $out/lib/pkgconfig/cimgui.pc \
+      --replace-fail '@out@' "$out"
+  '';
 }

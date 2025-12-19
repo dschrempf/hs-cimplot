@@ -27,12 +27,6 @@ stdenv.mkDerivation rec {
     maintainers = with maintainers; [ dschrempf ];
   };
 
-  prePatch = ''
-    substituteInPlace cimgui.cpp \
-      --replace-fail '#include "./imgui/imgui.h"' '#include <imgui.h>' \
-      --replace-fail '#include "./imgui/imgui_internal.h"' '#include <imgui_internal.h>'
-  '';
-
   nativeBuildInputs = [
     cmake
     pkg-config
@@ -40,4 +34,10 @@ stdenv.mkDerivation rec {
   buildInputs = [
     imgui
   ];
+
+  prePatch = ''
+    substituteInPlace cimgui.cpp \
+      --replace-fail '#include "./imgui/imgui.h"' '#include <imgui.h>' \
+      --replace-fail '#include "./imgui/imgui_internal.h"' '#include <imgui_internal.h>'
+  '';
 }

@@ -32,7 +32,7 @@
           hpkgs = pkgs.haskellPackages;
           hlib = pkgs.haskell.lib.compose;
           imgui = pkgs.callPackage ./nix/imgui.nix { };
-          implot = pkgs.callPackage ./nix/implot.nix { };
+          implot = pkgs.callPackage ./nix/implot.nix { inherit imgui; };
           cimgui = pkgs.callPackage ./nix/cimgui.nix { inherit imgui; };
           cimplot = pkgs.callPackage ./nix/cimplot.nix { inherit cimgui; };
           hs-cimplot = hlib.generateBindings ./generate-bindings (

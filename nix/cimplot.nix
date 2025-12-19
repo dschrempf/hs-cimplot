@@ -6,7 +6,7 @@
   cmake,
   pkg-config,
   #
-  # imgui,
+  imgui,
   implot,
   cimgui,
 }:
@@ -29,6 +29,16 @@ stdenv.mkDerivation rec {
     maintainers = with maintainers; [ dschrempf ];
   };
 
+  nativeBuildInputs = [
+    cmake
+    pkg-config
+  ];
+  buildInputs = [
+    imgui
+    cimgui
+    implot
+  ];
+
   prePatch = ''
     substituteInPlace cimplot.h \
       --replace-fail '#include "cimgui.h"' '#include <cimgui.h>'
@@ -40,15 +50,5 @@ stdenv.mkDerivation rec {
   postPatch = ''
     substituteInPlace CMakeLists.txt \
       --replace-fail "cmake_minimum_required(VERSION 3.1)" "cmake_minimum_required(VERSION 3.10)"
-      # --replace-fail 'add_definitions("-DIMGUI_USER_CONFIG=\"../cimconfig.h\"")' ""
   '';
-
-  nativeBuildInputs = [
-    cmake
-    pkg-config
-  ];
-  buildInputs = [
-    cimgui
-    implot
-  ];
 }

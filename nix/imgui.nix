@@ -25,9 +25,15 @@ stdenv.mkDerivation rec {
     maintainers = with maintainers; [ dschrempf ];
   };
 
+  nativeBuildInputs = [ cmake ];
+
   cmakeRules = "${vcpkg.src}/ports/imgui";
   postPatch = ''
     cp "$cmakeRules"/{CMakeLists.txt,*.cmake.in} ./
   '';
-  nativeBuildInputs = [ cmake ];
+
+  postConfigure = ''
+    substituteInPlace imgui-config.cmake \
+      --replace-fail 'if ( OR  OR )' 'if (FALSE)'
+  '';
 }

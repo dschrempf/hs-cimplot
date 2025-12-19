@@ -5,6 +5,8 @@
   #
   cmake,
   vcpkg,
+  #
+  imgui,
 }:
 
 stdenv.mkDerivation rec {
@@ -15,7 +17,7 @@ stdenv.mkDerivation rec {
     owner = "epezent";
     repo = "implot";
     rev = version;
-    hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+    hash = "sha256-HNzNRHPLr352EDkAci4nx5qQnPI308rGH8yHkF+n5OY=";
   };
 
   meta = with lib; {
@@ -25,21 +27,11 @@ stdenv.mkDerivation rec {
     maintainers = with maintainers; [ dschrempf ];
   };
 
+  nativeBuildInputs = [ cmake ];
+  buildInputs = [ imgui ];
+
   cmakeRules = "${vcpkg.src}/ports/implot";
   postPatch = ''
     cp "$cmakeRules"/CMakeLists.txt ./
   '';
-
-  prePatch = ''
-    # substituteInPlace cimplot.h \
-    #   --replace-fail '#include "cimgui.h"' '#include <cimgui.h>'
-
-    # substituteInPlace cimplot.cpp \
-    #   --replace-fail '#include "./implot/implot.h"' '#include <implot.h>'
-  '';
-
-  nativeBuildInputs = [
-    cmake
-  ];
-  buildInputs = [ ];
 }

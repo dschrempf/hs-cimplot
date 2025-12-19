@@ -4,7 +4,7 @@
   fetchFromGitHub,
   #
   cmake,
-  pkg-config,
+  vcpkg,
 }:
 
 stdenv.mkDerivation rec {
@@ -15,7 +15,7 @@ stdenv.mkDerivation rec {
     owner = "ocornut";
     repo = "imgui";
     rev = version;
-    hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+    hash = "sha256-/jVT7+874LCeSF/pdNVTFoSOfRisSqxCJnt5/SGCXPQ=";
   };
 
   meta = with lib; {
@@ -25,8 +25,9 @@ stdenv.mkDerivation rec {
     maintainers = with maintainers; [ dschrempf ];
   };
 
-  nativeBuildInputs = [
-    cmake
-    pkg-config
-  ];
+  cmakeRules = "${vcpkg.src}/ports/imgui";
+  postPatch = ''
+    cp "$cmakeRules"/{CMakeLists.txt,*.cmake.in} ./
+  '';
+  nativeBuildInputs = [ cmake ];
 }

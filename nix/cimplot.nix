@@ -7,7 +7,7 @@
   pkg-config,
   #
   # imgui,
-  # implot,
+  implot,
   cimgui,
 }:
 
@@ -19,8 +19,7 @@ stdenv.mkDerivation rec {
     owner = "cimgui";
     repo = "cimplot";
     rev = version;
-    hash = "sha256-BL1NpXYUkuR2VbASeo/koT0qi1si2ydWYEsd17czzFQ=";
-    fetchSubmodules = true;
+    hash = "sha256-Wca0zkyMYnADHXP9he6BO6Rr8FabTuRm743XjAYoYKw=";
   };
 
   meta = with lib; {
@@ -33,6 +32,9 @@ stdenv.mkDerivation rec {
   prePatch = ''
     substituteInPlace cimplot.h \
       --replace-fail '#include "cimgui.h"' '#include <cimgui.h>'
+
+    substituteInPlace cimplot.cpp \
+      --replace-fail '#include "./implot/implot.h"' '#include <implot.h>'
   '';
 
   postPatch = ''
@@ -47,5 +49,6 @@ stdenv.mkDerivation rec {
   ];
   buildInputs = [
     cimgui
+    implot
   ];
 }

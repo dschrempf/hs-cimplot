@@ -5,6 +5,8 @@
   #
   cmake,
   pkg-config,
+  #
+  imgui,
 }:
 
 stdenv.mkDerivation rec {
@@ -15,8 +17,7 @@ stdenv.mkDerivation rec {
     owner = "cimgui";
     repo = "cimgui";
     rev = version;
-    hash = "sha256-yWCGfckPxweclczvsWFWTryps7rCSrj8G1lrzAQ3Z7g=";
-    fetchSubmodules = true;
+    hash = "sha256-T/Z67xZgQFbYPl2ivfSDmN5pc0+Rnd9m5kYHTv4GQOE=";
   };
 
   meta = with lib; {
@@ -26,11 +27,17 @@ stdenv.mkDerivation rec {
     maintainers = with maintainers; [ dschrempf ];
   };
 
+  prePatch = ''
+    substituteInPlace cimgui.cpp \
+      --replace-fail '#include "./imgui/imgui.h"' '#include <imgui.h>' \
+      --replace-fail '#include "./imgui/imgui_internal.h"' '#include <imgui_internal.h>'
+  '';
+
   nativeBuildInputs = [
     cmake
     pkg-config
   ];
-  propagatedBuildInputs = [
-
+  buildInputs = [
+    imgui
   ];
 }

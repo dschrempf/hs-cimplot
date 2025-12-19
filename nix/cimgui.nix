@@ -30,4 +30,7 @@ stdenv.mkDerivation rec {
     cmake
     pkg-config
   ];
+  propagatedBuildInputs = [
+
+  ];
 }

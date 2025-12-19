@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+
+# Command line flags affecting module generation.
+module_flags=(
+    # C has a global namespace. Providing a unique ID ensures the C wrappers
+    # have unique names.
+    --unique-id org.hs-bindgen.tutorial
+    # Base output directory of generated bindings.
+    --hs-output-dir src
+    --create-output-dirs
+    --overwrite-files
+    --module Generated.CImplot
+)
+
+# Command line flags affecting `libclang`.
+libclang_flags=(
+    # # Enable GNU extensions.
+    # --gnu
+)
+
+# `hs-bindgen` parses the C header files using `libclang` and interprets/reifies
+# the declarations into an `hs-bindgen`-internal abstract syntax tree. These
+# flags affect the parsing/reifying step.
+parse_flags=(
+)
+
+# We only generate bindings for a sub-set of all parsed/reified declarations.
+# These flags configure the selection step.
+select_flags=(
+)
+
+# Increase the verbosity of `hs-bindgen` to learn something about its internals.
+# For example, activate Info-level log messages to see which declarations are
+# selected/not selected, or which C macros we succeed or fail to parse.
+debug_flags=(
+    # # Run `hs-bindgen` with log level "Info".
+    # -v3
+    # # Run `hs-bindgen` with log level "Debug".
+    # -v4
+)
+
+hs-bindgen-cli preprocess \
+    "${module_flags[@]}" \
+    "${libclang_flags[@]}" \
+    "${parse_flags[@]}" \
+    "${select_flags[@]}" \
+    "${debug_flags[@]}" \
+    cimplot.h

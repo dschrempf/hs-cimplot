@@ -31,13 +31,15 @@
           };
           hpkgs = pkgs.haskellPackages;
           hlib = pkgs.haskell.lib.compose;
-          cimplot = pkgs.callPackage ./nix/cimplot.nix { };
+          cimgui = pkgs.callPackage ./nix/cimgui.nix { };
+          cimplot = pkgs.callPackage ./nix/cimplot.nix { inherit cimgui; };
           hs-cimplot = hlib.generateBindings ./generate-bindings (
             hpkgs.callCabal2nix "hs-cimplot" ./. { inherit cimplot; }
           );
         in
         {
           packages = {
+            inherit cimgui cimplot;
             inherit hs-cimplot;
             inherit (pkgs) hs-bindgen-cli;
             default = hs-cimplot;
